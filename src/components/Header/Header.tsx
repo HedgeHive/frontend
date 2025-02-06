@@ -5,7 +5,6 @@ import { Link, useLocation } from "react-router-dom";
 import Button from "../Button";
 import { Column, Row } from "../Flex";
 import Banner from "./Banner";
-import SizedBox from "../SizedBox";
 
 interface IProps {}
 
