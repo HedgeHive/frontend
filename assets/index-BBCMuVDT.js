@@ -69,7 +69,7 @@ Please change the parent <Route path="${H}"> to <Route path="${H==="/"?"*":`${H}
 
   border-top: 2px #2a2a32 solid;
   padding: 16px;
-`,U3=()=>V.jsxs(H3,{children:[V.jsx(pa,{type:"secondary",fitContent:!0,children:"Agentic Ethereum, HedgeHive, 2025"}),V.jsx(Ne,{mainAxisSize:"fit-content",children:V.jsx(si,{width:20})})]}),N3="https://github.com/HedgeHive/frontend/assets/logo-BqGj7VAG.svg",Zf=xt.button`
+`,U3=()=>V.jsxs(H3,{children:[V.jsx(pa,{type:"secondary",fitContent:!0,children:"Agentic Ethereum, HedgeHive, 2025"}),V.jsx(Ne,{mainAxisSize:"fit-content",children:V.jsx(si,{width:20})})]}),N3="/frontend/assets/logo-BqGj7VAG.svg",Zf=xt.button`
   white-space: nowrap;
   display: flex;
   justify-content: center;
