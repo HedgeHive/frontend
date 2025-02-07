@@ -60,7 +60,7 @@ const MessagesPanel = styled.div`
   width: 100%;
   flex: 1;
   margin-bottom: 16px;
-  max-height: calc(100vh - 400px);
+  max-height: calc(100vh - 420px);
   overflow-y: auto;
 `;
 

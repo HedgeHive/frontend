@@ -1,4 +1,4 @@
-import BN from "@src/utils/BN";
+import BN from "./BN";
 
 export const assetPriceFormat = (price: BN, decimals = 8) => {
   if (price.eq(0)) return "0";
