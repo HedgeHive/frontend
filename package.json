@@ -13,13 +13,16 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
+    "bignumber.js": "^9.1.2",
     "dayjs": "^1.11.13",
     "normalize.css": "^8.0.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-router-dom": "^7.1.5",
-    "react-toastify": "^11.0.3"
+    "react-toastify": "^11.0.3",
+    "tsdef": "^0.0.14"
   },
   "devDependencies": {
     "@eslint/js": "^9.19.0",

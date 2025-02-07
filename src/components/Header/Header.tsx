@@ -12,6 +12,7 @@ interface IProps {}
 export const ROUTES = {
   CHAT: {title: "Chat", link: "/chat"},
   EARN: {title: "Earn", link: "/earn"},
+  PORTFOLIO: {title: "Portfolio", link: "/portfolio"},
 };
 
 

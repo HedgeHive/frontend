@@ -6,6 +6,7 @@ import Header from "./components/Header";
 import { ROUTES } from "./components/Header/Header";
 import ChatScreen from "./screens/ChatScreen";
 import RankingScreen from "./screens/RankingScreen";
+import PortfolioScreen from "./screens/PortfolioScreen";
 
 
 interface IProps {}
@@ -44,6 +45,7 @@ const App: React.FunctionComponent<IProps> = () => {
       <Routes key={location.pathname} location={location}>
           <Route path={ROUTES.CHAT.link} element={<ChatScreen />} />
           <Route path={ROUTES.EARN.link} element={<RankingScreen />} />
+          <Route path={ROUTES.PORTFOLIO.link} element={<PortfolioScreen />} />
           <Route path="*" element={<ChatScreen />} />
         </Routes>
       {/* <ChatScreen /> */}

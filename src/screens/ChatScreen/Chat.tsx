@@ -60,6 +60,8 @@ const MessagesPanel = styled.div`
   width: 100%;
   flex: 1;
   margin-bottom: 16px;
+  max-height: calc(100vh - 400px);
+  overflow-y: auto;
 `;
 
 const messages = [
@@ -75,7 +77,46 @@ const messages = [
     timestamp: dayjs().format("HH:mm"), 
     message: "I'm doing well, thank you! How can I assist you today?",
     isRight: true
-  }
+  },
+  {
+    address: "0xA...45Z",
+    timestamp: dayjs().format("HH:mm"), 
+    message: "Hello, how are you?",
+    isRight: false,
+    hasBackground: false
+  },
+  {
+    address: "HedgeHive AI",
+    timestamp: dayjs().format("HH:mm"), 
+    message: "I'm doing well, thank you! How can I assist you today?",
+    isRight: true
+  },
+  {
+    address: "0xA...45Z",
+    timestamp: dayjs().format("HH:mm"), 
+    message: "Hello, how are you?",
+    isRight: false,
+    hasBackground: false
+  },
+  {
+    address: "HedgeHive AI",
+    timestamp: dayjs().format("HH:mm"), 
+    message: "I'm doing well, thank you! How can I assist you today?",
+    isRight: true
+  },
+  {
+    address: "0xA...45Z",
+    timestamp: dayjs().format("HH:mm"), 
+    message: "Hello, how are you?",
+    isRight: false,
+    hasBackground: false
+  },
+  {
+    address: "HedgeHive AI",
+    timestamp: dayjs().format("HH:mm"), 
+    message: "I'm doing well, thank you! How can I assist you today?",
+    isRight: true
+  },
 ];
 
 
@@ -92,7 +133,7 @@ const Chat: React.FC = () => {
             <Divider style={{ margin: "16px 0" }} />
             <Row alignItems="center" justifyContent="space-between">
                 <Row></Row>
-                <Button>Sure, sign tx in your wallet</Button>
+                <Button>Send message</Button>
             </Row>
         </InputPanel>
     </Root>
