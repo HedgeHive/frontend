@@ -15,6 +15,7 @@
   "dependencies": {
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
+    "@privy-io/react-auth": "^2.3.0",
     "bignumber.js": "^9.1.2",
     "dayjs": "^1.11.13",
     "normalize.css": "^8.0.1",
@@ -22,7 +23,9 @@
     "react-dom": "^19.0.0",
     "react-router-dom": "^7.1.5",
     "react-toastify": "^11.0.3",
-    "tsdef": "^0.0.14"
+    "tsdef": "^0.0.14",
+    "use-sync-external-store": "^1.4.0",
+    "zustand": "^5.0.3"
   },
   "devDependencies": {
     "@eslint/js": "^9.19.0",

@@ -1,20 +1,16 @@
+import React from "react";
+import { usePrivy } from "@privy-io/react-auth";
 import styled from "@emotion/styled";
-import logo from "@src/assets/icons/logo.svg";
-import React, { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import Button from "../Button";
 import { Column, Row } from "../Flex";
 import Banner from "./Banner";
 
-interface IProps {}
-
-
 export const ROUTES = {
-  CHAT: {title: "Chat", link: "/chat"},
-  EARN: {title: "Earn", link: "/earn"},
-  PORTFOLIO: {title: "Portfolio", link: "/portfolio"},
+  CHAT: { title: "Chat", link: "/chat" },
+  EARN: { title: "Earn", link: "/earn" },
+  PORTFOLIO: { title: "Portfolio", link: "/portfolio" },
 };
-
 
 const Root = styled.div`
   display: flex;
@@ -35,6 +31,7 @@ const Root = styled.div`
     height: 80px;
   }
 `;
+
 const Logo = styled.img`
   height: 24px;
   @media (min-width: 768px) {
@@ -70,23 +67,26 @@ const MenuItem = styled(Button)<{ selected?: boolean }>`
   }
 `;
 
-
 const menuItems = Object.values(ROUTES).map((route) => ({
   title: route.title,
   link: route.link,
   routes: [route.link],
 }));
 
-
-const Header: React.FC<IProps> = () => {
+const Header: React.FC = () => {
   const location = useLocation();
-  const [bannerClosed, setBannerClosed] = useState(false);
+  const { ready, authenticated, user, login, logout } = usePrivy();
+
+  if (!ready) {
+    return null; // Ждем загрузки SDK
+  }
+
   return (
     <Column crossAxisSize="max" alignItems="center">
-      <Banner closed={bannerClosed} setClosed={setBannerClosed} />
+      <Banner closed={false} setClosed={() => {}} />
       <Root>
         <a href="/">
-          <Logo src={logo} />
+          <Logo src="/logo.svg" />
         </a>
         <MenuWrapperDesktop>
           {menuItems.map((item, i) => (
@@ -98,10 +98,18 @@ const Header: React.FC<IProps> = () => {
           ))}
         </MenuWrapperDesktop>
         <Row alignItems="center" mainAxisSize="fit-content">
-          <Button>Connect wallet</Button>
+          {authenticated ? (
+            <>
+              <span>👤 {user?.email || user?.wallet?.address}</span>
+              <Button onClick={logout}>Logout</Button>
+            </>
+          ) : (
+            <Button onClick={login}>Connect wallet</Button>
+          )}
         </Row>
       </Root>
     </Column>
   );
 };
+
 export default Header;
