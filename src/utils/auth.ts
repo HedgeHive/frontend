@@ -4,7 +4,6 @@ import { User } from "@privy-io/react-auth";
 export const handleSignMessage = async (
   authenticated: boolean,
   user: User | null,
-  setToken: (token: string) => void
 ) => {
   if (!authenticated || !user) return;
 
@@ -30,7 +29,6 @@ export const handleSignMessage = async (
     const message = "HedgeHive ask for signature";
     const signature = await signer.signMessage(message);
 
-    setToken(signature);
     localStorage.setItem("authToken", signature);
     console.log("Signed Token:", signature);
   } catch (error) {

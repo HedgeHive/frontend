@@ -109,8 +109,7 @@ const Header: React.FC = () => {
             <>
               <WalletInfo>
                     👤{" "}
-                    {user?.email ||
-                      (user?.wallet?.address
+                    {(user?.wallet?.address
                         ? `${user.wallet.address.slice(0, 3)}...${user.wallet.address.slice(-2)}`
                         : "")}
               </WalletInfo>

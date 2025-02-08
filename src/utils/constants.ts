@@ -1,6 +1,6 @@
 export const PRIVY_APP_ID = import.meta.env.VITE_PRIVY_APP_ID || "";
-export const AGENT_SERVER_PORT = 3000;
-export const AGENT_ID = "Agent";
+export const AGENT_SERVER_URL = "api";
+export const AGENT_ID = "bf21a5e2-9906-04c3-930c-ec0437c0195c";
 export const PRIVY_CONFIG = {
   loginMethods: ["wallet"],
   appearance: { theme: "dark" },

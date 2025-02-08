@@ -93,24 +93,26 @@ const Chat: React.FC = () => {
     const response =  await sendRequest(input)
     // TODO change
 
-    // if (response.data.reply) {
-    //   const botMessage = {
-    //     address: "HedgeHive AI",
-    //     timestamp: dayjs().format("HH:mm"),
-    //     message: response.data.reply,
-    //     hasBackground: true,
-    //     isRight: false
-    //   };
-
+    if (response[0].text) {
       const botMessage = {
         address: "HedgeHive AI",
         timestamp: dayjs().format("HH:mm"),
-        message: praiseMessages[Math.floor(Math.random() * praiseMessages.length)],
+        message: response[0].text,
         hasBackground: true,
         isRight: false
       };
+
+      // const botMessage = {
+      //   address: "HedgeHive AI",
+      //   timestamp: dayjs().format("HH:mm"),
+      //   message: praiseMessages[Math.floor(Math.random() * praiseMessages.length)],
+      //   hasBackground: true,
+      //   isRight: false
+      // };
       addMessage(botMessage);
     };
+  }
+
   
   return (
     <Root>

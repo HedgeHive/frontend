@@ -13,7 +13,7 @@ const Root = styled.div`
   box-sizing: border-box;
   width: calc(100% - 32px);
   max-width: calc(1160px + 32px);
-  margin: 40px 16px 0;
+  margin: 0 16px 0;
   text-align: left;
 
   border-top: 2px #2a2a32 solid;

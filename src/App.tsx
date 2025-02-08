@@ -8,7 +8,6 @@ import { ROUTES } from "./components/Header/Header";
 import ChatScreen from "./screens/ChatScreen";
 import RankingScreen from "./screens/RankingScreen";
 import PortfolioScreen from "./screens/PortfolioScreen";
-import * as ethers from "ethers";
 import { handleSignMessage } from "./utils/auth";
 
 const Root = styled.div`
@@ -77,8 +76,7 @@ const LoginButton = styled.button`
 const App: React.FunctionComponent = () => {
   const location = useLocation();
   const { authenticated,  user, login, ready } = usePrivy();
-  const [showModal, setShowModal] = useState(false);
-  const [token, setToken] = useState<string | null>(null);
+  const [showModal, setShowModal] = useState(true);
 
   useEffect(() => {
     if (!ready) return;
@@ -86,7 +84,7 @@ const App: React.FunctionComponent = () => {
       setShowModal(true);
     } else {
       setShowModal(false);
-      handleSignMessage(authenticated, user, setToken);    }
+      handleSignMessage(authenticated, user);    }
   }, [authenticated]);  
   return (
     <Root>
