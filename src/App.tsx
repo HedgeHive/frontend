@@ -8,6 +8,9 @@ import { ROUTES } from "./components/Header/Header";
 import ChatScreen from "./screens/ChatScreen";
 import RankingScreen from "./screens/RankingScreen";
 import PortfolioScreen from "./screens/PortfolioScreen";
+import * as ethers from "ethers";
+
+
 
 const Root = styled.div`
   display: flex;
@@ -73,17 +76,56 @@ const LoginButton = styled.button`
 
 const App: React.FunctionComponent = () => {
   const location = useLocation();
-  const { authenticated, login } = usePrivy();
+  const { authenticated,  user, login } = usePrivy();
   const [showModal, setShowModal] = useState(false);
+  const [token, setToken] = useState<string | null>(null);
 
   useEffect(() => {
     if (!authenticated) {
       setShowModal(true);
     } else {
       setShowModal(false);
+      handleSignMessage();
     }
   }, [authenticated]);
 
+  const handleSignMessage = async () => {
+    if (!authenticated || !user) return;
+  
+    try {
+      // Проверяем, есть ли подключенный кошелек
+      if (!window.ethereum) {
+        console.error("Metamask not found.");
+        return;
+      }
+
+      if (!user.wallet || !user.wallet.address) {
+        console.warn("No wallet connected.");
+        return;
+      }
+  
+      if (window.ethereum.isMetaMask !== true) {
+        console.error("Metamask is not the default provider.");
+        return;
+      }
+
+      const provider = new ethers.BrowserProvider(window.ethereum);
+      const signer = await provider.getSigner();
+  
+      const message = "HedgeHive ask for signature";
+      const signature = await signer.signMessage(message);
+  
+      setToken(signature);
+      localStorage.setItem("authToken", signature);
+      console.log("Signed Token:", signature);
+    } catch (error) {
+      console.error("Signing failed:", error);
+    }
+  };
+  
+  
+  
+  
   return (
     <Root>
       <Header />
