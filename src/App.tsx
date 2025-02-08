@@ -9,8 +9,7 @@ import ChatScreen from "./screens/ChatScreen";
 import RankingScreen from "./screens/RankingScreen";
 import PortfolioScreen from "./screens/PortfolioScreen";
 import * as ethers from "ethers";
-
-
+import { handleSignMessage } from "./utils/auth";
 
 const Root = styled.div`
   display: flex;
@@ -28,10 +27,12 @@ const Root = styled.div`
 const Content = styled.div`
   display: flex;
   min-height: calc(100vh - 194px - 80px);
+  margin: auto;
   @media (min-width: 768px) {
     min-height: calc(100vh - 210px - 64px);
     max-width: calc(1160px + 32px);
     width: 100%;
+    margin: auto;
     box-sizing: border-box;
   }
 `;
@@ -75,55 +76,18 @@ const LoginButton = styled.button`
 
 const App: React.FunctionComponent = () => {
   const location = useLocation();
-  const { authenticated,  user, login } = usePrivy();
+  const { authenticated,  user, login, ready } = usePrivy();
   const [showModal, setShowModal] = useState(false);
   const [token, setToken] = useState<string | null>(null);
 
   useEffect(() => {
+    if (!ready) return;
     if (!authenticated) {
       setShowModal(true);
     } else {
       setShowModal(false);
-      handleSignMessage();
-    }
-  }, [authenticated]);
-
-  const handleSignMessage = async () => {
-    if (!authenticated || !user) return;
-  
-    try {
-      if (!window.ethereum) {
-        console.error("Metamask not found.");
-        return;
-      }
-
-      if (!user.wallet || !user.wallet.address) {
-        console.warn("No wallet connected.");
-        return;
-      }
-  
-      if (window.ethereum.isMetaMask !== true) {
-        console.error("Metamask is not the default provider.");
-        return;
-      }
-
-      const provider = new ethers.BrowserProvider(window.ethereum);
-      const signer = await provider.getSigner();
-  
-      const message = "HedgeHive ask for signature";
-      const signature = await signer.signMessage(message);
-  
-      setToken(signature);
-      localStorage.setItem("authToken", signature);
-      console.log("Signed Token:", signature);
-    } catch (error) {
-      console.error("Signing failed:", error);
-    }
-  };
-  
-  
-  
-  
+      handleSignMessage(authenticated, user, setToken);    }
+  }, [authenticated]);  
   return (
     <Root>
       <Header />

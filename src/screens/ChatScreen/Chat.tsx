@@ -7,6 +7,7 @@ import Message from "./Message";
 import dayjs from "dayjs";
 import { sendRequest } from "../../utils/request";  
 import { useChatStore } from "../../store/chatStore"; 
+import { praiseMessages } from "../../utils/constants";
 
 const Root = styled.div`
   display: flex;
@@ -61,7 +62,7 @@ const MessagesPanel = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-  flex: 1;
+  flex: 2;
   margin-bottom: 16px;
   max-height: calc(100vh - 420px);
   overflow-y: auto;
@@ -90,17 +91,27 @@ const Chat: React.FC = () => {
     setInput("");
   
     const response =  await sendRequest(input)
-    if (response.data.reply) {
+    // TODO change
+
+    // if (response.data.reply) {
+    //   const botMessage = {
+    //     address: "HedgeHive AI",
+    //     timestamp: dayjs().format("HH:mm"),
+    //     message: response.data.reply,
+    //     hasBackground: true,
+    //     isRight: false
+    //   };
+
       const botMessage = {
         address: "HedgeHive AI",
         timestamp: dayjs().format("HH:mm"),
-        message: response.data.reply,
+        message: praiseMessages[Math.floor(Math.random() * praiseMessages.length)],
         hasBackground: true,
-        isRight: true
+        isRight: false
       };
       addMessage(botMessage);
     };
-  };
+  
   return (
     <Root>
       <MessagesPanel>
