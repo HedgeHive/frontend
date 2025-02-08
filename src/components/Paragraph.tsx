@@ -23,6 +23,7 @@ const Paragraph = styled.div<{
   font-weight: ${({ weight }) => weight ?? 500};
   white-space: ${({ nowrap }) => (nowrap ? "nowrap" : "unset")};
   text-align: ${({ textAlign }) => textAlign ?? "default"};
+  padding-top: 10px;  
   ${({ onClick }) => onClick != null && "cursor: pointer;"};
 
   ${({ size }) =>

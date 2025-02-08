@@ -1,11 +1,12 @@
 import styled from "@emotion/styled";
-import React from "react";
+import React, { useState } from "react";
 import Button from "../../components/Button";
 import { Row } from "../../components/Flex";
 import Divider from "../../components/Divider";
 import Message from "./Message";
 import dayjs from "dayjs";
-
+import axios from "axios";
+import {sendRequest} from "../../utils/request";  
 
 const Root = styled.div`
   display: flex;
@@ -54,6 +55,7 @@ const TextArea = styled.textarea`
     color: #A2A2C0;
   }
 `;
+
 const MessagesPanel = styled.div`
   display: flex;
   flex-direction: column;
@@ -64,81 +66,65 @@ const MessagesPanel = styled.div`
   overflow-y: auto;
 `;
 
-const messages = [
-  {
-    address: "0xA...45Z",
-    timestamp: dayjs().format("HH:mm"), 
-    message: "Hello, how are you?",
-    isRight: false,
-    hasBackground: false
-  },
-  {
-    address: "HedgeHive AI",
-    timestamp: dayjs().format("HH:mm"), 
-    message: "I'm doing well, thank you! How can I assist you today?",
-    isRight: true
-  },
-  {
-    address: "0xA...45Z",
-    timestamp: dayjs().format("HH:mm"), 
-    message: "Hello, how are you?",
-    isRight: false,
-    hasBackground: false
-  },
-  {
-    address: "HedgeHive AI",
-    timestamp: dayjs().format("HH:mm"), 
-    message: "I'm doing well, thank you! How can I assist you today?",
-    isRight: true
-  },
-  {
-    address: "0xA...45Z",
-    timestamp: dayjs().format("HH:mm"), 
-    message: "Hello, how are you?",
-    isRight: false,
-    hasBackground: false
-  },
-  {
-    address: "HedgeHive AI",
-    timestamp: dayjs().format("HH:mm"), 
-    message: "I'm doing well, thank you! How can I assist you today?",
-    isRight: true
-  },
-  {
-    address: "0xA...45Z",
-    timestamp: dayjs().format("HH:mm"), 
-    message: "Hello, how are you?",
-    isRight: false,
-    hasBackground: false
-  },
-  {
-    address: "HedgeHive AI",
-    timestamp: dayjs().format("HH:mm"), 
-    message: "I'm doing well, thank you! How can I assist you today?",
-    isRight: true
-  },
-];
-
-
 const Chat: React.FC = () => {
+  const [messages, setMessages] = useState([
+    {
+      address: "HedgeHive AI",
+      timestamp: dayjs().format("HH:mm"),
+      message: "Hello! How can I assist you?",
+      isRight: false
+    },
+  ]);
+
+  const [input, setInput] = useState("");
+
+
+  const sendMessage = async () => {
+    if (!input.trim()) return;
+    const userMessage = {
+      address: "user",
+      timestamp: dayjs().format("HH:mm"),
+      message: input,
+      isRight: true,
+      hasBackground: true
+    };
+
+    setMessages(prev => [...prev, userMessage]);
+    setInput("");
+    const response =  sendRequest(input)
+    if (response.data.reply) {
+      const botMessage = {
+        address: "HedgeHive AI",
+        timestamp: dayjs().format("HH:mm"),
+        message: response.data.reply,
+        hasBackground: true,
+        isRight: true
+      };
+      setMessages(prev => [...prev, botMessage]);
+    };
+  };
   return (
     <Root>
-        <MessagesPanel >
-          {messages.map((message, index) => (
-            <Message key={index} {...message} />
-          ))}
-        </MessagesPanel>
-        <InputPanel>
-            <TextArea placeholder="How can I help you?" />
-            <Divider style={{ margin: "16px 0" }} />
-            <Row alignItems="center" justifyContent="space-between">
-                <Row></Row>
-                <Button>Send message</Button>
-            </Row>
-        </InputPanel>
+      <MessagesPanel>
+        {messages.map((message, index) => (
+          <Message key={index} {...message} />
+        ))}
+      </MessagesPanel>
+      <InputPanel>
+        <TextArea
+          placeholder="How can I help you?"
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          onKeyDown={(e) => e.key === "Enter" && !e.shiftKey && sendMessage()}
+        />
+        <Divider style={{ margin: "16px 0" }} />
+        <Row alignItems="center" justifyContent="space-between">
+          <Row></Row>
+          <Button onClick={sendMessage}>Send message</Button>
+        </Row>
+      </InputPanel>
     </Root>
   );
 };
+
 export default Chat;
-
-

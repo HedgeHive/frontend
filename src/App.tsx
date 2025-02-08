@@ -1,7 +1,7 @@
+import React, { useState, useEffect } from "react";
 import styled from "@emotion/styled";
-import React from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
-import { PrivyProvider, usePrivy } from "@privy-io/react-auth";
+import { usePrivy } from "@privy-io/react-auth";
 import Footer from "./components/Footer";
 import Header from "./components/Header";
 import { ROUTES } from "./components/Header/Header";
@@ -9,12 +9,10 @@ import ChatScreen from "./screens/ChatScreen";
 import RankingScreen from "./screens/RankingScreen";
 import PortfolioScreen from "./screens/PortfolioScreen";
 
-const PRIVY_APP_ID = import.meta.env.VITE_PRIVY_APP_ID || "";
-console.log('1231234', import.meta.env);
 const Root = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: space-around;
   width: 100%;
   min-height: 100vh;
   align-items: center;
@@ -35,37 +33,79 @@ const Content = styled.div`
   }
 `;
 
-const PrivateRoute = ({ element }: { element: JSX.Element }) => {
-  const { authenticated } = usePrivy();
-  return authenticated ? element : <ChatScreen />;
-};
+// Стили для модального окна
+const ModalOverlay = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7); /* Затемнение */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+`;
+
+const ModalContent = styled.div`
+  background: #1f1e25;
+  padding: 24px;
+  border-radius: 8px;
+  text-align: center;
+  color: white;
+  max-width: 400px;
+`;
+
+const LoginButton = styled.button`
+  background: #4a90e2;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+  margin-top: 16px;
+
+  &:hover {
+    background: #357bd8;
+  }
+`;
 
 const App: React.FunctionComponent = () => {
-  console.log(PRIVY_APP_ID);
   const location = useLocation();
+  const { authenticated, login } = usePrivy();
+  const [showModal, setShowModal] = useState(false);
+
+  useEffect(() => {
+    if (!authenticated) {
+      setShowModal(true);
+    } else {
+      setShowModal(false);
+    }
+  }, [authenticated]);
 
   return (
-    <PrivyProvider 
-      appId={PRIVY_APP_ID}
-      config={{
-      loginMethods: [ "wallet"],
-      appearance: {
-        theme: "dark", 
-      },
-    }}>
-      <Root>
-        <Header />
-        <Content>
-          <Routes key={location.pathname} location={location}>
-            <Route path={ROUTES.CHAT.link} element={<ChatScreen />} />
-            <Route path={ROUTES.EARN.link} element={<RankingScreen />} />
-            <Route path={ROUTES.PORTFOLIO.link} element={<PrivateRoute element={<PortfolioScreen />} />} />
-            <Route path="*" element={<ChatScreen />} />
-          </Routes>
-        </Content>
-        <Footer />
-      </Root>
-    </PrivyProvider>
+    <Root>
+      <Header />
+      <Content>
+        <Routes key={location.pathname} location={location}>
+          <Route path={ROUTES.CHAT.link} element={<ChatScreen />} />
+          <Route path={ROUTES.EARN.link} element={<RankingScreen />} />
+          <Route path={ROUTES.PORTFOLIO.link} element={<PortfolioScreen />} />
+          <Route path="*" element={<ChatScreen />} />
+        </Routes>
+      </Content>
+      <Footer />
+      {showModal && (
+        <ModalOverlay>
+          <ModalContent>
+            <h2>Welcome to the App</h2>
+            <p>Please log in to continue.</p>
+            <LoginButton onClick={login}>Login</LoginButton>
+          </ModalContent>
+        </ModalOverlay>
+      )}
+    </Root>
   );
 };
 

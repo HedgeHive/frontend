@@ -7,6 +7,7 @@ const MessageRoot = styled.div<{ isRight?: boolean; hasBackground?: boolean }>`
   display: flex;
   flex-direction: column;
   padding: 16px;
+  margin-top: 8px;
   gap: 12px;
   max-width: 80%;
   width: fit-content;

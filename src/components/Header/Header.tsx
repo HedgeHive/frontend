@@ -1,4 +1,4 @@
-import React from "react";
+import React,{ useState} from "react";
 import { usePrivy } from "@privy-io/react-auth";
 import styled from "@emotion/styled";
 import { Link, useLocation } from "react-router-dom";
@@ -67,6 +67,11 @@ const MenuItem = styled(Button)<{ selected?: boolean }>`
   }
 `;
 
+const WalletInfo = styled.span`
+  margin-right: 10px;
+`;
+
+
 const menuItems = Object.values(ROUTES).map((route) => ({
   title: route.title,
   link: route.link,
@@ -76,14 +81,16 @@ const menuItems = Object.values(ROUTES).map((route) => ({
 const Header: React.FC = () => {
   const location = useLocation();
   const { ready, authenticated, user, login, logout } = usePrivy();
+  const [bannerClosed, setBannerClosed] = useState(false);
+
 
   if (!ready) {
-    return null; // Ждем загрузки SDK
+    return null;
   }
 
   return (
     <Column crossAxisSize="max" alignItems="center">
-      <Banner closed={false} setClosed={() => {}} />
+      <Banner closed={bannerClosed} setClosed={setBannerClosed} />
       <Root>
         <a href="/">
           <Logo src="/logo.svg" />
@@ -100,7 +107,13 @@ const Header: React.FC = () => {
         <Row alignItems="center" mainAxisSize="fit-content">
           {authenticated ? (
             <>
-              <span>👤 {user?.email || user?.wallet?.address}</span>
+              <WalletInfo>
+                    👤{" "}
+                    {user?.email ||
+                      (user?.wallet?.address
+                        ? `${user.wallet.address.slice(0, 3)}...${user.wallet.address.slice(-2)}`
+                        : "")}
+              </WalletInfo>
               <Button onClick={logout}>Logout</Button>
             </>
           ) : (

@@ -16,6 +16,7 @@
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
     "@privy-io/react-auth": "^2.3.0",
+    "axios": "^1.7.9",
     "bignumber.js": "^9.1.2",
     "dayjs": "^1.11.13",
     "normalize.css": "^8.0.1",
