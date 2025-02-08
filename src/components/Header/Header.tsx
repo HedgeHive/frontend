@@ -93,7 +93,7 @@ const Header: React.FC = () => {
       <Banner closed={bannerClosed} setClosed={setBannerClosed} />
       <Root>
         <a href="/">
-          <Logo src="/logo.svg" />
+          HADGEHIVE
         </a>
         <MenuWrapperDesktop>
           {menuItems.map((item, i) => (

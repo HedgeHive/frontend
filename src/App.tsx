@@ -36,7 +36,6 @@ const Content = styled.div`
   }
 `;
 
-// Стили для модального окна
 const ModalOverlay = styled.div`
   position: fixed;
   top: 0;
@@ -93,7 +92,6 @@ const App: React.FunctionComponent = () => {
     if (!authenticated || !user) return;
   
     try {
-      // Проверяем, есть ли подключенный кошелек
       if (!window.ethereum) {
         console.error("Metamask not found.");
         return;

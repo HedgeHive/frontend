@@ -5,7 +5,6 @@ import { Row } from "../../components/Flex";
 import Divider from "../../components/Divider";
 import Message from "./Message";
 import dayjs from "dayjs";
-import axios from "axios";
 import {sendRequest} from "../../utils/request";  
 
 const Root = styled.div`
