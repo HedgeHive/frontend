@@ -1,20 +1,16 @@
+import React,{ useState} from "react";
+import { usePrivy } from "@privy-io/react-auth";
 import styled from "@emotion/styled";
-import logo from "@src/assets/icons/logo.svg";
-import React, { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import Button from "../Button";
 import { Column, Row } from "../Flex";
 import Banner from "./Banner";
 
-interface IProps {}
-
-
 export const ROUTES = {
-  CHAT: {title: "Chat", link: "/chat"},
-  EARN: {title: "Earn", link: "/earn"},
-  PORTFOLIO: {title: "Portfolio", link: "/portfolio"},
+  CHAT: { title: "Chat", link: "/chat" },
+  EARN: { title: "Earn", link: "/earn" },
+  PORTFOLIO: { title: "Portfolio", link: "/portfolio" },
 };
-
 
 const Root = styled.div`
   display: flex;
@@ -35,12 +31,13 @@ const Root = styled.div`
     height: 80px;
   }
 `;
-const Logo = styled.img`
-  height: 24px;
-  @media (min-width: 768px) {
-    height: 32px;
-  }
-`;
+
+// const Logo = styled.img`
+//   height: 24px;
+//   @media (min-width: 768px) {
+//     height: 32px;
+//   }
+// `;
 
 const MenuWrapperDesktop = styled(Row)`
   width: 100%;
@@ -70,6 +67,10 @@ const MenuItem = styled(Button)<{ selected?: boolean }>`
   }
 `;
 
+const WalletInfo = styled.span`
+  margin-right: 10px;
+`;
+
 
 const menuItems = Object.values(ROUTES).map((route) => ({
   title: route.title,
@@ -77,17 +78,23 @@ const menuItems = Object.values(ROUTES).map((route) => ({
   routes: [route.link],
 }));
 
-
-const Header: React.FC<IProps> = () => {
+const Header: React.FC = () => {
   const location = useLocation();
+  const { ready, authenticated, user, login, logout } = usePrivy();
   const [bannerClosed, setBannerClosed] = useState(false);
+
+
+  if (!ready) {
+    return null;
+  }
+
   return (
     <Column crossAxisSize="max" alignItems="center">
       <Banner closed={bannerClosed} setClosed={setBannerClosed} />
       <Root>
-        <a href="/">
-          <Logo src={logo} />
-        </a>
+        
+          HADGEHIVE
+        
         <MenuWrapperDesktop>
           {menuItems.map((item, i) => (
             <Link to={item.link} key={i}>
@@ -98,10 +105,24 @@ const Header: React.FC<IProps> = () => {
           ))}
         </MenuWrapperDesktop>
         <Row alignItems="center" mainAxisSize="fit-content">
-          <Button>Connect wallet</Button>
+          {authenticated ? (
+            <>
+              <WalletInfo>
+                    👤{" "}
+                    {user?.email ||
+                      (user?.wallet?.address
+                        ? `${user.wallet.address.slice(0, 3)}...${user.wallet.address.slice(-2)}`
+                        : "")}
+              </WalletInfo>
+              <Button onClick={logout}>Logout</Button>
+            </>
+          ) : (
+            <Button onClick={login}>Connect wallet</Button>
+          )}
         </Row>
       </Root>
     </Column>
   );
 };
+
 export default Header;

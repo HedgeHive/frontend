@@ -1,11 +1,13 @@
 import styled from "@emotion/styled";
-import React from "react";
+import React, { useState,useRef, useEffect } from "react";
 import Button from "../../components/Button";
 import { Row } from "../../components/Flex";
 import Divider from "../../components/Divider";
 import Message from "./Message";
 import dayjs from "dayjs";
-
+import { sendRequest } from "../../utils/request";  
+import { useChatStore } from "../../store/chatStore"; 
+import { praiseMessages } from "../../utils/constants";
 
 const Root = styled.div`
   display: flex;
@@ -13,6 +15,7 @@ const Root = styled.div`
   align-items: center;
   box-sizing: border-box;
   width: 100%;
+  margin-top: 20px;
   max-width: calc(1160px + 32px);
   padding: 0 16px;
   @media (min-width: 768px) {
@@ -54,91 +57,84 @@ const TextArea = styled.textarea`
     color: #A2A2C0;
   }
 `;
+
 const MessagesPanel = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-  flex: 1;
+  flex: 2;
   margin-bottom: 16px;
   max-height: calc(100vh - 420px);
   overflow-y: auto;
 `;
 
-const messages = [
-  {
-    address: "0xA...45Z",
-    timestamp: dayjs().format("HH:mm"), 
-    message: "Hello, how are you?",
-    isRight: false,
-    hasBackground: false
-  },
-  {
-    address: "HedgeHive AI",
-    timestamp: dayjs().format("HH:mm"), 
-    message: "I'm doing well, thank you! How can I assist you today?",
-    isRight: true
-  },
-  {
-    address: "0xA...45Z",
-    timestamp: dayjs().format("HH:mm"), 
-    message: "Hello, how are you?",
-    isRight: false,
-    hasBackground: false
-  },
-  {
-    address: "HedgeHive AI",
-    timestamp: dayjs().format("HH:mm"), 
-    message: "I'm doing well, thank you! How can I assist you today?",
-    isRight: true
-  },
-  {
-    address: "0xA...45Z",
-    timestamp: dayjs().format("HH:mm"), 
-    message: "Hello, how are you?",
-    isRight: false,
-    hasBackground: false
-  },
-  {
-    address: "HedgeHive AI",
-    timestamp: dayjs().format("HH:mm"), 
-    message: "I'm doing well, thank you! How can I assist you today?",
-    isRight: true
-  },
-  {
-    address: "0xA...45Z",
-    timestamp: dayjs().format("HH:mm"), 
-    message: "Hello, how are you?",
-    isRight: false,
-    hasBackground: false
-  },
-  {
-    address: "HedgeHive AI",
-    timestamp: dayjs().format("HH:mm"), 
-    message: "I'm doing well, thank you! How can I assist you today?",
-    isRight: true
-  },
-];
-
-
 const Chat: React.FC = () => {
+  const [input, setInput] = useState("");
+  const messagesEndRef = useRef<HTMLDivElement | null>(null);
+  const { messages, addMessage } = useChatStore();
+
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
+
+  const sendMessage = async () => {
+    if (!input.trim()) return;
+    const userMessage = {
+      address: "user",
+      timestamp: dayjs().format("HH:mm"),
+      message: input,
+      isRight: true,
+      hasBackground: true
+    };
+
+    addMessage(userMessage)
+    setInput("");
+  
+    const response =  await sendRequest(input)
+    // TODO change
+
+    // if (response.data.reply) {
+    //   const botMessage = {
+    //     address: "HedgeHive AI",
+    //     timestamp: dayjs().format("HH:mm"),
+    //     message: response.data.reply,
+    //     hasBackground: true,
+    //     isRight: false
+    //   };
+
+      const botMessage = {
+        address: "HedgeHive AI",
+        timestamp: dayjs().format("HH:mm"),
+        message: praiseMessages[Math.floor(Math.random() * praiseMessages.length)],
+        hasBackground: true,
+        isRight: false
+      };
+      addMessage(botMessage);
+    };
+  
   return (
     <Root>
-        <MessagesPanel >
-          {messages.map((message, index) => (
-            <Message key={index} {...message} />
-          ))}
-        </MessagesPanel>
-        <InputPanel>
-            <TextArea placeholder="How can I help you?" />
-            <Divider style={{ margin: "16px 0" }} />
-            <Row alignItems="center" justifyContent="space-between">
-                <Row></Row>
-                <Button>Send message</Button>
-            </Row>
-        </InputPanel>
+      <MessagesPanel>
+        {messages.map((message, index) => (
+          <Message key={index} {...message} />
+        ))}
+        <div ref={messagesEndRef} />
+      </MessagesPanel>
+      <InputPanel>
+        <TextArea
+          placeholder="How can I help you?"
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          onKeyDown={(e) => e.key === "Enter" && !e.shiftKey && sendMessage()}
+        />
+        <Divider style={{ margin: "16px 0" }} />
+        <Row alignItems="center" justifyContent="space-between">
+          <Row></Row>
+          <Button onClick={sendMessage}>Send message</Button>
+        </Row>
+      </InputPanel>
     </Root>
   );
 };
+
 export default Chat;
-
-

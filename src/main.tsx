@@ -4,11 +4,20 @@ import { HashRouter as Router } from "react-router-dom";
 import "normalize.css";
 import { ToastContainer } from "react-toastify";
 import { createRoot } from "react-dom/client";
+import { PrivyProvider } from "@privy-io/react-auth";
+import {PRIVY_APP_ID}  from "./utils/constants";  
 
-
-createRoot(document.getElementById('root')!).render(
-  <Router>
-    <App />
-    <ToastContainer theme={"dark"} />
-  </Router>
-)
+createRoot(document.getElementById("root")!).render(
+  <PrivyProvider
+    appId={PRIVY_APP_ID}
+    config={{
+      loginMethods: ["wallet"],
+      appearance: { theme: "dark" },
+    }}
+  >
+    <Router>
+      <App />
+      <ToastContainer theme="dark" />
+    </Router>
+  </PrivyProvider>
+);
