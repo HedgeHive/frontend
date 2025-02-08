@@ -1,8 +1,10 @@
 export const PRIVY_APP_ID = import.meta.env.VITE_PRIVY_APP_ID || "";
 export const AGENT_SERVER_PORT = 3000;
 export const AGENT_ID = "Agent";
-
-
+export const PRIVY_CONFIG = {
+  loginMethods: ["wallet"],
+  appearance: { theme: "dark" },
+}
 // ✅ Array of praise phrases
 export const praiseMessages = [
   "You're doing an amazing job! 🚀",
