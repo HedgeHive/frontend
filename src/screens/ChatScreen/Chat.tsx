@@ -5,7 +5,8 @@ import { Row } from "../../components/Flex";
 import Divider from "../../components/Divider";
 import Message from "./Message";
 import dayjs from "dayjs";
-import {sendRequest} from "../../utils/request";  
+import { sendRequest } from "../../utils/request";  
+import { useChatStore } from "../../store/chatStore"; 
 
 const Root = styled.div`
   display: flex;
@@ -13,6 +14,7 @@ const Root = styled.div`
   align-items: center;
   box-sizing: border-box;
   width: 100%;
+  margin-top: 20px;
   max-width: calc(1160px + 32px);
   padding: 0 16px;
   @media (min-width: 768px) {
@@ -66,17 +68,9 @@ const MessagesPanel = styled.div`
 `;
 
 const Chat: React.FC = () => {
-  const [messages, setMessages] = useState([
-    {
-      address: "HedgeHive AI",
-      timestamp: dayjs().format("HH:mm"),
-      message: "Hello! How can I assist you?",
-      isRight: false
-    },
-  ]);
-
   const [input, setInput] = useState("");
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
+  const { messages, addMessage } = useChatStore();
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -92,8 +86,9 @@ const Chat: React.FC = () => {
       hasBackground: true
     };
 
-    setMessages(prev => [...prev, userMessage]);
+    addMessage(userMessage)
     setInput("");
+  
     const response =  await sendRequest(input)
     if (response.data.reply) {
       const botMessage = {
@@ -103,7 +98,7 @@ const Chat: React.FC = () => {
         hasBackground: true,
         isRight: true
       };
-      setMessages(prev => [...prev, botMessage]);
+      addMessage(botMessage);
     };
   };
   return (

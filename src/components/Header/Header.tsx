@@ -32,12 +32,12 @@ const Root = styled.div`
   }
 `;
 
-const Logo = styled.img`
-  height: 24px;
-  @media (min-width: 768px) {
-    height: 32px;
-  }
-`;
+// const Logo = styled.img`
+//   height: 24px;
+//   @media (min-width: 768px) {
+//     height: 32px;
+//   }
+// `;
 
 const MenuWrapperDesktop = styled(Row)`
   width: 100%;
@@ -92,9 +92,9 @@ const Header: React.FC = () => {
     <Column crossAxisSize="max" alignItems="center">
       <Banner closed={bannerClosed} setClosed={setBannerClosed} />
       <Root>
-        <a href="/">
+        
           HADGEHIVE
-        </a>
+        
         <MenuWrapperDesktop>
           {menuItems.map((item, i) => (
             <Link to={item.link} key={i}>
