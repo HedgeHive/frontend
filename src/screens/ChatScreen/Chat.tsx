@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import React, { useState } from "react";
+import React, { useState,useRef, useEffect } from "react";
 import Button from "../../components/Button";
 import { Row } from "../../components/Flex";
 import Divider from "../../components/Divider";
@@ -76,7 +76,11 @@ const Chat: React.FC = () => {
   ]);
 
   const [input, setInput] = useState("");
+  const messagesEndRef = useRef<HTMLDivElement | null>(null);
 
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
 
   const sendMessage = async () => {
     if (!input.trim()) return;
@@ -90,7 +94,7 @@ const Chat: React.FC = () => {
 
     setMessages(prev => [...prev, userMessage]);
     setInput("");
-    const response =  sendRequest(input)
+    const response =  await sendRequest(input)
     if (response.data.reply) {
       const botMessage = {
         address: "HedgeHive AI",
@@ -108,6 +112,7 @@ const Chat: React.FC = () => {
         {messages.map((message, index) => (
           <Message key={index} {...message} />
         ))}
+        <div ref={messagesEndRef} />
       </MessagesPanel>
       <InputPanel>
         <TextArea
