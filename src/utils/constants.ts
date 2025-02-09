@@ -4,7 +4,7 @@ export const AGENT_ID = "bf21a5e2-9906-04c3-930c-ec0437c0195c";
 export const PRIVY_CONFIG = {
   loginMethods: ["wallet"],
   appearance: { theme: "dark" },
-}
+};
 // ✅ Array of praise phrases
 export const praiseMessages = [
   "You're doing an amazing job! 🚀",
@@ -26,5 +26,5 @@ export const praiseMessages = [
   "You're coding like a pro! 🎩",
   "What a fantastic approach! 👌",
   "Your efficiency is remarkable! ⏳",
-  "You're mastering this! 🔝"
+  "You're mastering this! 🔝",
 ];

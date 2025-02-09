@@ -34,6 +34,7 @@ interface IMessageProps {
   message: string;
   isRight?: boolean;
   hasBackground?: boolean;
+  icon?: string;
 }
 
 const Message: React.FC<IMessageProps> = ({
@@ -41,14 +42,15 @@ const Message: React.FC<IMessageProps> = ({
   timestamp,
   message,
   isRight = false,
-  hasBackground = true
+  hasBackground = true,
+  icon
 }) => {
   return (
     <MessageRoot isRight={isRight} hasBackground={hasBackground}>
       <Row alignItems="center">
-        <Avatar />
+        <Avatar style={{ backgroundImage:icon? `url(${icon})` : "none" , border: "2px solid #666DE3"}} />
         <SizedBox width={12} />
-        <Paragraph type="secondary">{address} | {timestamp}</Paragraph>
+        <Paragraph style={{ padding: 0 }} type="secondary">{address} | {timestamp}</Paragraph>
       </Row>
       <Paragraph>{message}</Paragraph>
     </MessageRoot>

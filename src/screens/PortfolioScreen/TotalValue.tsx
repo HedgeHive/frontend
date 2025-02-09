@@ -5,7 +5,7 @@ import SizedBox from "../../components/SizedBox";
 import { Column } from "../../components/Flex";
 import centerEllipsis from "../../utils/centerEllipsis";
 import { Anchor } from "../../components/Anchor";
-import eth from "../../assets/icons/background.svg";
+import bg from "../../assets/icons/background.svg";
 
 interface IProps {}
 
@@ -19,7 +19,7 @@ const Top = styled.div`
   flex-direction: column;
   align-items: center;
 
-  background: url(${eth}) bottom right #565cbf;
+  background: url(${bg}) bottom right #565cbf;
   background-size: cover;
   padding: 27px 16px;
   border-radius: 16px 16px 0 0;

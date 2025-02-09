@@ -1,14 +1,12 @@
-import React, { useState, useEffect } from "react";
 import styled from "@emotion/styled";
+import React from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
-import { usePrivy } from "@privy-io/react-auth";
 import Footer from "./components/Footer";
 import Header from "./components/Header";
 import { ROUTES } from "./components/Header/Header";
 import ChatScreen from "./screens/ChatScreen";
-import RankingScreen from "./screens/RankingScreen";
 import PortfolioScreen from "./screens/PortfolioScreen";
-import { handleSignMessage } from "./utils/auth";
+import RankingScreen from "./screens/RankingScreen";
 
 const Root = styled.div`
   display: flex;
@@ -19,7 +17,7 @@ const Root = styled.div`
   align-items: center;
 
   & > * {
-    width: 100%;
+    width: 100%; 
   }
 `;
 
@@ -36,56 +34,9 @@ const Content = styled.div`
   }
 `;
 
-const ModalOverlay = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.7); /* Затемнение */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
-`;
-
-const ModalContent = styled.div`
-  background: #1f1e25;
-  padding: 24px;
-  border-radius: 8px;
-  text-align: center;
-  color: white;
-  max-width: 400px;
-`;
-
-const LoginButton = styled.button`
-  background: #4a90e2;
-  color: white;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 4px;
-  font-size: 16px;
-  cursor: pointer;
-  margin-top: 16px;
-
-  &:hover {
-    background: #357bd8;
-  }
-`;
-
 const App: React.FunctionComponent = () => {
   const location = useLocation();
-  const { authenticated,  user, login, ready } = usePrivy();
-  const [showModal, setShowModal] = useState(true);
-
-  useEffect(() => {
-    if (!ready) return;
-    if (!authenticated) {
-      setShowModal(true);
-    } else {
-      setShowModal(false);
-      handleSignMessage(authenticated, user);    }
-  }, [authenticated]);  
+   
   return (
     <Root>
       <Header />
@@ -98,15 +49,6 @@ const App: React.FunctionComponent = () => {
         </Routes>
       </Content>
       <Footer />
-      {showModal && (
-        <ModalOverlay>
-          <ModalContent>
-            <h2>Welcome to the App</h2>
-            <p>Please log in to continue.</p>
-            <LoginButton onClick={login}>Login</LoginButton>
-          </ModalContent>
-        </ModalOverlay>
-      )}
     </Root>
   );
 };

@@ -20,7 +20,6 @@ const Root = styled.div`
   flex-direction: column;
   width: 100%;
   min-width: 280px;
-  height: 152px;
   background: #1f1e25;
   border-radius: 8px;
 `;

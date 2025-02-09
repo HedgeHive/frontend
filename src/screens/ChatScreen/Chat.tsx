@@ -7,7 +7,13 @@ import Message from "./Message";
 import dayjs from "dayjs";
 import { sendRequest } from "../../utils/request";  
 import { useChatStore } from "../../store/chatStore"; 
-import { praiseMessages } from "../../utils/constants";
+import ConnectWallet from "../../components/IsConnectedWallet";
+import logo from "@src/assets/icons/logo.svg";
+import { usePrivy } from "@privy-io/react-auth";
+import centerEllipsis from "../../utils/centerEllipsis";
+import * as identityImg from "identity-img";
+import Loading from "../../components/Loading";
+
 
 const Root = styled.div`
   display: flex;
@@ -49,10 +55,6 @@ const TextArea = styled.textarea`
   resize: none;
   outline: none;
 
-  &:focus {
-    border-color: #666DE3;
-  }
-
   &::placeholder {
     color: #A2A2C0;
   }
@@ -69,9 +71,11 @@ const MessagesPanel = styled.div`
 `;
 
 const Chat: React.FC = () => {
+  const { user } = usePrivy();
   const [input, setInput] = useState("");
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
   const { messages, addMessage } = useChatStore();
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -79,38 +83,48 @@ const Chat: React.FC = () => {
 
   const sendMessage = async () => {
     if (!input.trim()) return;
-    const userMessage = {
-      address: "user",
-      timestamp: dayjs().format("HH:mm"),
-      message: input,
-      isRight: true,
-      hasBackground: true
-    };
-
-    addMessage(userMessage)
-    setInput("");
-  
-    const response =  await sendRequest(input)
-    // TODO change
-
-    if (response[0].text) {
-      const botMessage = {
-        address: "HedgeHive AI",
+    setIsLoading(true);
+    try{
+      const userMessage = {
+        address: centerEllipsis(user?.wallet?.address || "***************", 8),
         timestamp: dayjs().format("HH:mm"),
-        message: response[0].text,
+        message: input,
+        isRight: true,
         hasBackground: true,
-        isRight: false
+        icon: identityImg.create(user?.wallet?.address || "***************", { size: 24 * 3 })
       };
-
-      // const botMessage = {
-      //   address: "HedgeHive AI",
-      //   timestamp: dayjs().format("HH:mm"),
-      //   message: praiseMessages[Math.floor(Math.random() * praiseMessages.length)],
-      //   hasBackground: true,
-      //   isRight: false
-      // };
-      addMessage(botMessage);
-    };
+  
+      addMessage(userMessage)
+      setInput("");
+    
+      const response = await sendRequest(input)
+      // TODO change
+  
+      if (response[0].text) {
+        const botMessage = {
+          address: "HedgeHive AI",
+          timestamp: dayjs().format("HH:mm"),
+          message: response[0].text,
+          hasBackground: true,
+          isRight: false,
+          icon: logo
+        };
+  
+        // const botMessage = {
+        //   address: "HedgeHive AI",
+        //   timestamp: dayjs().format("HH:mm"),
+        //   message: praiseMessages[Math.floor(Math.random() * praiseMessages.length)],
+        //   hasBackground: true,
+        //   isRight: false
+        // };
+        addMessage(botMessage);
+      };
+    } catch (error) {
+      console.error("Error:", error);
+    } finally {
+      setIsLoading(false);
+    }
+    
   }
 
   
@@ -123,17 +137,19 @@ const Chat: React.FC = () => {
         <div ref={messagesEndRef} />
       </MessagesPanel>
       <InputPanel>
+      <ConnectWallet>
         <TextArea
           placeholder="How can I help you?"
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && !e.shiftKey && sendMessage()}
-        />
+          />
         <Divider style={{ margin: "16px 0" }} />
         <Row alignItems="center" justifyContent="space-between">
           <Row></Row>
-          <Button onClick={sendMessage}>Send message</Button>
+          {isLoading ? <Button style={{ width: "300px" }}  disabled><Loading /></Button> : <Button disabled={!input.trim()} style={{ width: "300px" }} onClick={sendMessage}>Send message</Button>}
         </Row>
+          </ConnectWallet>
       </InputPanel>
     </Root>
   );

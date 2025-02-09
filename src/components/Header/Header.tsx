@@ -1,15 +1,19 @@
-import React,{ useState} from "react";
-import { usePrivy } from "@privy-io/react-auth";
 import styled from "@emotion/styled";
+import logo from "@src/assets/icons/logo.svg";
+import React, { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
+import { Anchor } from "../Anchor";
 import Button from "../Button";
 import { Column, Row } from "../Flex";
 import Banner from "./Banner";
+import Wallet from "../Wallet";
+import telegramIcon from "@src/assets/icons/telegram.svg";
 
-export const ROUTES = {
-  CHAT: { title: "Chat", link: "/chat" },
+export const ROUTES: { [key: string]: { title: string; link: string; icon?: string; default?: boolean; targetBlank?: boolean } } = {
+  CHAT: { title: "Chat", link: "/chat", default: true },
   EARN: { title: "Earn", link: "/earn" },
   PORTFOLIO: { title: "Portfolio", link: "/portfolio" },
+  HELP: { title: "Need help?", link: "https://t.me/hedgehive", icon: telegramIcon, targetBlank: true },
 };
 
 const Root = styled.div`
@@ -67,58 +71,39 @@ const MenuItem = styled(Button)<{ selected?: boolean }>`
   }
 `;
 
-const WalletInfo = styled.span`
-  margin-right: 10px;
-`;
-
 
 const menuItems = Object.values(ROUTES).map((route) => ({
   title: route.title,
   link: route.link,
-  routes: [route.link],
+  routes: [route.link, route.default ? "/" : ""],
+  icon: route.icon,
+  targetBlank: route.targetBlank,
 }));
 
 const Header: React.FC = () => {
   const location = useLocation();
-  const { ready, authenticated, user, login, logout } = usePrivy();
   const [bannerClosed, setBannerClosed] = useState(false);
-
-
-  if (!ready) {
-    return null;
-  }
 
   return (
     <Column crossAxisSize="max" alignItems="center">
       <Banner closed={bannerClosed} setClosed={setBannerClosed} />
       <Root>
-        
-          HADGEHIVE
+        <Anchor href="https://hedgehive.carrd.co/" > 
+          <img src={logo} alt="Hedgehive" />
+        </Anchor>
         
         <MenuWrapperDesktop>
           {menuItems.map((item, i) => (
-            <Link to={item.link} key={i}>
+            <Link to={item.link} target={item.targetBlank ? "_blank" : undefined} key={i}>
               <MenuItem selected={item.routes.includes(location.pathname)}>
+                {item.icon && <img style={{ width: 20, height: 20 , marginRight: 4 }} src={item.icon} alt={item.title} />}
                 {item.title}
               </MenuItem>
             </Link>
           ))}
         </MenuWrapperDesktop>
-        <Row alignItems="center" mainAxisSize="fit-content">
-          {authenticated ? (
-            <>
-              <WalletInfo>
-                    👤{" "}
-                    {(user?.wallet?.address
-                        ? `${user.wallet.address.slice(0, 3)}...${user.wallet.address.slice(-2)}`
-                        : "")}
-              </WalletInfo>
-              <Button onClick={logout}>Logout</Button>
-            </>
-          ) : (
-            <Button onClick={login}>Connect wallet</Button>
-          )}
-        </Row>
+    
+         <Wallet />
       </Root>
     </Column>
   );

@@ -1,12 +1,13 @@
 import { create } from "zustand";
 import dayjs from "dayjs";
-
+import logo from "@src/assets/icons/logo.svg";
 interface ChatMessage {
   address: string;
   timestamp: string;
   message: string;
   isRight: boolean;
   hasBackground?: boolean;
+  icon?: string;
 }
 
 interface ChatState {
@@ -22,6 +23,7 @@ export const useChatStore = create<ChatState>((set) => ({
       timestamp: dayjs().format("HH:mm"),
       message: "Hello! How can I assist you?",
       isRight: false,
+      icon: logo
     },
   ],
   addMessage: (msg) =>

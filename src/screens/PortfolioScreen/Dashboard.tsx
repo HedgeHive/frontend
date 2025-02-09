@@ -7,10 +7,10 @@ const Root = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-  padding: 24px 16px 0;
+  padding: 24px 16px ;
   box-sizing: border-box;
   @media (min-width: 768px) {
-    padding: 0 24px;
+    padding: 0 24px 16px 24px;
   }
 `;
 
