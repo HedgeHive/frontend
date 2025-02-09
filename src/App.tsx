@@ -5,8 +5,6 @@ import Footer from "./components/Footer";
 import Header from "./components/Header";
 import { ROUTES } from "./components/Header/Header";
 import ChatScreen from "./screens/ChatScreen";
-import PortfolioScreen from "./screens/PortfolioScreen";
-import RankingScreen from "./screens/RankingScreen";
 
 const Root = styled.div`
   display: flex;

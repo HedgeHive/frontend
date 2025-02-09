@@ -97,7 +97,7 @@ const Chat: React.FC = () => {
       const provider = await wallet.getEthereumProvider();
       const signature = await provider.request({
         method: 'personal_sign',
-        params: [message, user.wallet.address],
+        params: [message, user?.wallet?.address],
       });
 
       localStorage.setItem("wallet_signature", signature);
@@ -121,7 +121,7 @@ const Chat: React.FC = () => {
       addMessage(userMessage)
       setInput("");
     
-      const response = await sendRequest(input, user?.wallet?.address)
+      const response = await sendRequest(input, user?.wallet?.address || 'User')
       // TODO change
   
       if (response[0].text) {
