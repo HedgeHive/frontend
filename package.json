@@ -1,6 +1,6 @@
 {
   "name": "hedgehive-frontend",
-  "homepage": "https://hedgehive.github.io/frontend/",
+  "homepage": "https://hedgehive.github.io/frontend",
   "private": true,
   "version": "0.0.0",
   "type": "module",
