@@ -32,7 +32,7 @@ const AddressContainer = styled.div<{ expanded: boolean }>`
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 38px;
+  height: 40px;
   box-sizing: border-box;
   border-radius: 20px;
   padding: 8px 8px 8px 8px;
