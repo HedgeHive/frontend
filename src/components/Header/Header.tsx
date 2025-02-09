@@ -11,8 +11,8 @@ import telegramIcon from "@src/assets/icons/telegram.svg";
 
 export const ROUTES: { [key: string]: { title: string; link: string; icon?: string; default?: boolean; targetBlank?: boolean } } = {
   CHAT: { title: "Chat", link: "/chat", default: true },
-  EARN: { title: "Earn", link: "/earn" },
-  PORTFOLIO: { title: "Portfolio", link: "/portfolio" },
+  // EARN: { title: "Earn", link: "/earn" },
+  // PORTFOLIO: { title: "Portfolio", link: "/portfolio" },
   HELP: { title: "Need help?", link: "https://t.me/hedgehive", icon: telegramIcon, targetBlank: true },
 };
 

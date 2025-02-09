@@ -97,7 +97,7 @@ const Chat: React.FC = () => {
       addMessage(userMessage)
       setInput("");
     
-      const response = await sendRequest(input)
+      const response = await sendRequest(input, user?.wallet?.address)
       // TODO change
   
       if (response[0].text) {

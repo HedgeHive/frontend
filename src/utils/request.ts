@@ -1,16 +1,16 @@
-import { AGENT_SERVER_URL, AGENT_ID } from '../utils/constants';
+import { AGENT_URL, AGENT_ID } from '../utils/constants';
 
-export async function sendRequest(input: string) {
+export async function sendRequest(input: string, userId: string) {
   
     try {
-      const response = await fetch(`${AGENT_SERVER_URL}/${AGENT_ID}/message`, {
+      const response = await fetch(`${AGENT_URL}/${AGENT_ID}/message`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
           text: input,
-          userId: "1",
+          userId: userId,
           userName: "User",
         }),
       });

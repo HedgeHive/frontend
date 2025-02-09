@@ -43,8 +43,8 @@ const App: React.FunctionComponent = () => {
       <Content>
         <Routes key={location.pathname} location={location}>
           <Route path={ROUTES.CHAT.link} element={<ChatScreen />} />
-          <Route path={ROUTES.EARN.link} element={<RankingScreen />} />
-          <Route path={ROUTES.PORTFOLIO.link} element={<PortfolioScreen />} />
+          {/* <Route path={ROUTES.EARN.link} element={<RankingScreen />} />
+          <Route path={ROUTES.PORTFOLIO.link} element={<PortfolioScreen />} /> */}
           <Route path="*" element={<ChatScreen />} />
         </Routes>
       </Content>

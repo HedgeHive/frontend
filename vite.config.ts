@@ -12,13 +12,12 @@ export default defineConfig({
   },
   server: {
     proxy: {
-      "/api": { // ✅ Все запросы, начинающиеся с "/api" будут проксироваться
-        target: "https://47e5-2001-1ae9-2af-3d00-dde-2d3c-7c84-c1f0.ngrok-free.app",
-        changeOrigin: true, // ✅ Меняет заголовок Origin на целевой сервер
-        secure: false, // ✅ Используется, если сервер HTTPS с self-signed SSL
-        rewrite: (path) => path.replace(/^\/api/, ""), // ✅ Убирает "/api" перед отправкой
+      "/api": {
+        target: "https://autonome.alt.technology/heh-mdnhua",
+        changeOrigin: true,
+        secure: false,
+        rewrite: (path) => path.replace(/^\/api/, ""),
       },
     },
   },
-  base: "/frontend/", // Добавляем базовый путь, соответствующий названию репозитория
 });
