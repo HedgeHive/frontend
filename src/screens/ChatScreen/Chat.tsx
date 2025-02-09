@@ -9,7 +9,7 @@ import { sendRequest } from "../../utils/request";
 import { useChatStore } from "../../store/chatStore"; 
 import ConnectWallet from "../../components/IsConnectedWallet";
 import logo from "@src/assets/icons/logo.svg";
-import { usePrivy } from "@privy-io/react-auth";
+import { usePrivy, useWallets } from "@privy-io/react-auth";
 import centerEllipsis from "../../utils/centerEllipsis";
 import * as identityImg from "identity-img";
 import Loading from "../../components/Loading";
@@ -71,15 +71,39 @@ const MessagesPanel = styled.div`
 `;
 
 const Chat: React.FC = () => {
-  const { user } = usePrivy();
+  const { user, authenticated, ready } = usePrivy();
   const [input, setInput] = useState("");
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
   const { messages, addMessage } = useChatStore();
   const [isLoading, setIsLoading] = useState(false);
-
+  const {wallets} = useWallets();
+  const wallet = wallets[0]; 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
+  
+  useEffect(() => {
+    if(ready) {
+      const storedSignature = localStorage.getItem("wallet_signature");
+      if (authenticated && user?.wallet?.address && !storedSignature) {
+        getSignature();
+      }
+    }
+  }, [authenticated]);
+  const getSignature = async () => {
+    const message = `Signature to HedgeHive at ${new Date().toISOString()}`;
+  
+    try {
+      const provider = await wallet.getEthereumProvider();
+      const signature = await provider.request({
+        method: 'personal_sign',
+        params: [message, user.wallet.address],
+      });
+
+      localStorage.setItem("wallet_signature", signature);
+    } catch (error) { 
+      console.error("Error:", error); }
+   }
 
   const sendMessage = async () => {
     if (!input.trim()) return;
